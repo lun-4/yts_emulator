@@ -1,0 +1,19 @@
+# .NET build outputs
+bin/
+obj/
+*.user
+*.suo
+
+# Rider / VS / VSCode
+.idea/
+.vs/
+.vscode/
+
+# NuGet
+*.nupkg
+.nuget/
+project.lock.json
+project.assets.json
+
+# Avalonia previewer
+*.axaml.g.cs

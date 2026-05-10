@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>YtsEmulator</RootNamespace>
+    <AssemblyName>YtsEmulator</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+
+    <!--
+      Compile the in-repo DSL + apps as part of this project.
+      The DSL files use #if !COMPILER_UDONSHARP && UNITY_EDITOR; defining UNITY_EDITOR
+      activates them while keeping COMPILER_UDONSHARP off. The mock layer below
+      provides the Unity / TMPro / UdonSharp / VRC types they reference.
+    -->
+    <DefineConstants>$(DefineConstants);UNITY_EDITOR</DefineConstants>
+
+    <!-- Reflection assigns SerializeField fields at runtime; the compiler can't see those writes/reads. -->
+    <NoWarn>$(NoWarn);CS0169;CS0649;CS0108;NU1903</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.2" />
+  </ItemGroup>
+
+  <!-- Pull DSL + apps from the parent repo, minus the Unity-Editor entanglements -->
+  <ItemGroup>
+    <Compile Include="..\..\AppGen\Node.cs" Link="AppGen\Node.cs" />
+    <Compile Include="..\..\AppGen\AppGenTypes.cs" Link="AppGen\AppGenTypes.cs" />
+    <Compile Include="..\..\AppGen\AppLayout.cs" Link="AppGen\AppLayout.cs" />
+    <Compile Include="..\..\AppGen\DmnwareAppAttribute.cs" Link="AppGen\DmnwareAppAttribute.cs" />
+
+    <Compile Include="..\..\Runtime\DmnwareApp.cs" Link="Runtime\DmnwareApp.cs" />
+
+    <Compile Include="..\..\Counter\Counter.cs" Link="Apps\Counter\Counter.cs" />
+    <Compile Include="..\..\Counter\Counter.gen.cs" Link="Apps\Counter\Counter.gen.cs" />
+    <Compile Include="..\..\Counter\Counter.layout.cs" Link="Apps\Counter\Counter.layout.cs" />
+
+    <Compile Include="..\..\Calculator\Calculator.cs" Link="Apps\Calculator\Calculator.cs" />
+    <Compile Include="..\..\Calculator\Calculator.gen.cs" Link="Apps\Calculator\Calculator.gen.cs" />
+    <Compile Include="..\..\Calculator\Calculator.layout.cs" Link="Apps\Calculator\Calculator.layout.cs" />
+
+    <Compile Include="..\..\FlappyBird\FlappyBird.cs" Link="Apps\FlappyBird\FlappyBird.cs" />
+    <Compile Include="..\..\FlappyBird\FlappyBird.gen.cs" Link="Apps\FlappyBird\FlappyBird.gen.cs" />
+    <Compile Include="..\..\FlappyBird\FlappyBird.layout.cs" Link="Apps\FlappyBird\FlappyBird.layout.cs" />
+  </ItemGroup>
+</Project>
