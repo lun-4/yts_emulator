@@ -179,16 +179,17 @@ public class LayoutEngine
         btn.image = imgChild;
 
         var (bgCol, fgCol) = Theme.ButtonColors(b.Mods.Style);
+        var labelTextBlock = new TextBlock
+        {
+            Text = b.Label ?? "",
+            Foreground = new SolidColorBrush(fgCol),
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            FontSize = Theme.BodyFontSize,
+        };
         var av = new AvCtl.Button
         {
-            Content = new TextBlock
-            {
-                Text = b.Label ?? "",
-                Foreground = new SolidColorBrush(fgCol),
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                FontSize = Theme.BodyFontSize,
-            },
+            Content = labelTextBlock,
             Background = new SolidColorBrush(bgCol),
             Foreground = new SolidColorBrush(fgCol),
             BorderThickness = new Thickness(0),
@@ -199,6 +200,18 @@ public class LayoutEngine
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Stretch,
         };
+
+        // Real Unity prefab (see AppGen/Editor/PrefabBuilder.cs:BuildButton) parents a "Label"
+        // child holding the TextMeshProUGUI under the button GO. Mirror that so apps can do
+        // `button.gameObject.transform.GetChild(0).GetComponent<TMP_Text>()` to drive the label
+        // at runtime (Minesweeper does this for cell numbers).
+        var labelGo = new GameObject("Label");
+        var labelTmp = new TMP_Text { text = b.Label ?? "" };
+        labelGo.AddComponent(labelTmp);
+        labelGo.transform.SetParent(go.transform);
+        labelTmp.OnTextChanged = t => labelTextBlock.Text = t;
+        labelTmp.OnFontSizeChanged = sz => labelTextBlock.FontSize = sz;
+        labelTmp.OnColorChanged = c => labelTextBlock.Foreground = Theme.BrushFromUnity(c);
 
         // FlappyBird sets flap.image.color = clear to make the button invisible. Mirror it.
         imgChild.OnColorChanged = c =>

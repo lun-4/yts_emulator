@@ -47,5 +47,9 @@
     <Compile Include="..\..\FlappyBird\FlappyBird.cs" Link="Apps\FlappyBird\FlappyBird.cs" />
     <Compile Include="..\..\FlappyBird\FlappyBird.gen.cs" Link="Apps\FlappyBird\FlappyBird.gen.cs" />
     <Compile Include="..\..\FlappyBird\FlappyBird.layout.cs" Link="Apps\FlappyBird\FlappyBird.layout.cs" />
+
+    <Compile Include="..\..\Minesweeper\Minesweeper.cs" Link="Apps\Minesweeper\Minesweeper.cs" />
+    <Compile Include="..\..\Minesweeper\Minesweeper.gen.cs" Link="Apps\Minesweeper\Minesweeper.gen.cs" />
+    <Compile Include="..\..\Minesweeper\Minesweeper.layout.cs" Link="Apps\Minesweeper\Minesweeper.layout.cs" />
   </ItemGroup>
 </Project>
