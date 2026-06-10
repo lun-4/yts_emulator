@@ -1,5 +1,9 @@
 # YTS Emulator
 
+**disclaimer:** this project is mainly developed via LLMs guided by the actual private
+YTS project specs for AppGen. the original AppGen specification is given in this repo
+as a source of truth so you can create other types of emulators.
+
 A desktop harness for developing **DMNware** apps — the app platform that runs on the
 YTS in-world handheld/VR "phone" (VRChat + UdonSharp) — **without** Unity or VRChat.
 
